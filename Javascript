@@ -1,0 +1,146 @@
+let assignments = [];
+
+function addAssignment(){
+
+    let title=document.getElementById("title").value;
+
+    let subject=document.getElementById("subject").value;
+
+    let date=document.getElementById("date").value;
+
+    if(title=="" || subject=="" || date==""){
+        alert("Fill all fields");
+        return;
+    }
+
+    let today=new Date().toISOString().split("T")[0];
+
+    let status="Pending";
+
+    if(date<today){
+        status="Late";
+    }
+
+    assignments.push({
+        title,
+        subject,
+        date,
+        status
+    });
+
+    updateFilter();
+
+    display(assignments);
+
+    document.getElementById("title").value="";
+    document.getElementById("subject").value="";
+    document.getElementById("date").value="";
+}
+
+function display(list){
+
+    let body=document.getElementById("tableBody");
+
+    body.innerHTML="";
+
+    let submitted=0;
+    let pending=0;
+    let late=0;
+
+    list.forEach(item=>{
+
+        let row=`
+        <tr>
+            <td>${item.title}</td>
+            <td>${item.subject}</td>
+            <td>${item.date}</td>
+
+            <td>
+                <select onchange="changeStatus(this, '${item.title}')">
+                    <option ${item.status=="Pending"?"selected":""}>Pending</option>
+                    <option ${item.status=="Submitted"?"selected":""}>Submitted</option>
+                    <option ${item.status=="Late"?"selected":""}>Late</option>
+                </select>
+            </td>
+        </tr>
+        `;
+
+        body.innerHTML+=row;
+
+        if(item.status=="Submitted")
+            submitted++;
+
+        else if(item.status=="Pending")
+            pending++;
+
+        else
+            late++;
+
+    });
+
+    document.getElementById("submitted").innerHTML=submitted;
+
+    document.getElementById("pending").innerHTML=pending;
+
+    document.getElementById("late").innerHTML=late;
+
+}
+
+function changeStatus(select,title){
+
+    assignments.forEach(item=>{
+
+        if(item.title==title){
+
+            item.status=select.value;
+
+        }
+
+    });
+
+    display(assignments);
+
+}
+
+function updateFilter(){
+
+    let filter=document.getElementById("filter");
+
+    let subjects=["All"];
+
+    assignments.forEach(item=>{
+
+        if(!subjects.includes(item.subject))
+            subjects.push(item.subject);
+
+    });
+
+    filter.innerHTML="";
+
+    subjects.forEach(sub=>{
+
+        filter.innerHTML+=`<option value="${sub}">${sub}</option>`;
+
+    });
+
+}
+
+function filterAssignments(){
+
+    let value=document.getElementById("filter").value;
+
+    if(value=="All"){
+
+        display(assignments);
+
+    }
+
+    else{
+
+        let filtered=assignments.filter(item=>item.subject==value);
+
+        display(filtered);
+
+    }
+
+}
