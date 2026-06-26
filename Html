@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assignment Tracker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+    <h1>College Assignment Submission Tracker</h1>
+
+    <input type="text" id="title" placeholder="Assignment Title">
+
+    <input type="text" id="subject" placeholder="Subject">
+
+    <input type="date" id="date">
+
+    <button onclick="addAssignment()">Add Assignment</button>
+
+    <br><br>
+
+    <select id="filter" onchange="filterAssignments()">
+        <option value="All">All Subjects</option>
+    </select>
+
+    <h2>Dashboard</h2>
+
+    <div class="summary">
+        <p>Submitted : <span id="submitted">0</span></p>
+        <p>Pending : <span id="pending">0</span></p>
+        <p>Late : <span id="late">0</span></p>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Subject</th>
+                <th>Due Date</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+
+        <tbody id="tableBody">
+
+        </tbody>
+    </table>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
